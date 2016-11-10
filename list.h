@@ -79,7 +79,12 @@ namespace list {
              * @param T itemValue
              * @return void
              */
-            virtual void addItem(T itemValue) = 0;
+            virtual void append(T itemValue) = 0;
+
+            /**
+             * @return int
+             */
+            virtual int count() = 0;
     };
 
     template<typename T>
@@ -135,11 +140,38 @@ namespace list {
              * @param T itemValue
              * @return void
              */
-            void addItem(T itemValue)
+            void append(T itemValue)
             {
                 UnidirectionalItem<T>* item;
                 item = new UnidirectionalItem<T>(itemValue);
                 this->end()->bindNext(item);
+            }
+
+            /**
+             * @param T itemValue
+             * @return void
+             */
+            void prepend(T itemValue)
+            {
+                UnidirectionalItem<T> *item;
+                item = new UnidirectionalItem<T>(itemValue);
+                
+                item->bindNext(this->first);
+                this->first = item;
+            }
+
+            /**
+             * @return int
+             */
+            int count()
+            {
+                int c = 1;
+                UnidirectionalItem<T>* current;
+                current = this->first;
+
+                while(current = current->getNext()) ++c;
+
+                return c;
             }
 
         private:
