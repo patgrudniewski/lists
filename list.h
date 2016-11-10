@@ -82,9 +82,20 @@ namespace list {
             virtual void append(T itemValue) = 0;
 
             /**
+             * @param T itemValue
+             * @return void
+             */
+            virtual void prepend(T itemValue) = 0;
+
+            /**
              * @return int
              */
             virtual int count() = 0;
+
+            /**
+             * @return T
+             */
+            virtual T shift() = 0;
     };
 
     template<typename T>
@@ -172,6 +183,20 @@ namespace list {
                 while(current = current->getNext()) ++c;
 
                 return c;
+            }
+
+            /**
+             * @return T
+             */
+            T shift()
+            {
+                T value = this->first->getValue();
+                UnidirectionalItem<T>* shifted = this->first;
+
+                this->first = this->first->getNext();
+                delete shifted;
+
+                return value;
             }
 
         private:
