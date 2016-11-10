@@ -5,7 +5,7 @@
 #define LIST_H
 
 #include <cstdlib>
-
+#include <iostream>
 namespace list {
     template<typename T>
     class AbstractItem
@@ -96,6 +96,11 @@ namespace list {
              * @return T
              */
             virtual T shift() = 0;
+
+            /**
+             * @return T
+             */
+            virtual T pop() = 0;
     };
 
     template<typename T>
@@ -187,14 +192,40 @@ namespace list {
 
             /**
              * @return T
+             * @throws char static*
              */
             T shift()
             {
                 T value = this->first->getValue();
                 UnidirectionalItem<T>* shifted = this->first;
 
+                if (NULL == this->first->getNext()) throw "List cannot be empty";
+
                 this->first = this->first->getNext();
                 delete shifted;
+
+                return value;
+            }
+
+            /**
+             * @return T
+             */
+            T pop()
+            {
+                UnidirectionalItem<T> *current;
+                T value;
+
+                if (NULL == this->first->getNext()) throw "List cannot be empty";
+
+                current = this->first;
+                while (current->getNext()->getNext()) {
+                    current = current->getNext();
+                }
+
+                value = current->getNext()->getValue();
+
+                delete current->getNext();
+                current->bindNext(NULL);
 
                 return value;
             }
