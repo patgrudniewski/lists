@@ -17,7 +17,7 @@ namespace list {
             AbstractItem(T value)
                 : value(value) {  }
 
-            virtual ~AbstractItem() {  };
+            virtual ~AbstractItem() {  }
 
             /**
              * @return T
@@ -67,6 +67,91 @@ namespace list {
              * @var UnidirectionalItem<T>*
              */
             UnidirectionalItem<T> *next;
+    };
+    
+    template<typename T>
+    class AbstractList
+    {
+        public:
+            virtual ~AbstractList() {  }
+
+            /**
+             * @param T itemValue
+             * @return void
+             */
+            virtual void addItem(T itemValue) = 0;
+    };
+
+    template<typename T>
+    class UnidirectionalList : public AbstractList<T>
+    {
+        public:
+            /**
+             * @param UnidirectionalItem<T>* first
+             */
+            UnidirectionalList(UnidirectionalItem<T>* first)
+                : first(first), current(first) {  }
+
+            /**
+             * @param T firstValue
+             */
+            UnidirectionalList(T firstValue)
+            {
+                this->current = new UnidirectionalItem<T>(firstValue);
+            }
+
+            /**
+             * @return UnidirectionalItem<T>*
+             */
+            UnidirectionalItem<T>* getCurrent()
+            {
+                return this->current;
+            }
+
+            /**
+             * @return UnidirectionalItem<T>*
+             */
+            UnidirectionalItem<T>* rewind()
+            {
+                this->current = this->first;
+
+                return this->current;
+            }
+
+            /**
+             * @return UnidirectionalItem<T>* item
+             */
+            UnidirectionalItem<T>* end()
+            {
+                UnidirectionalItem<T>* next;
+                while(next = this->current->getNext()) { 
+                    this->current = next;
+                }
+
+                return this->current;
+            }
+
+            /**
+             * @param T itemValue
+             * @return void
+             */
+            void addItem(T itemValue)
+            {
+                UnidirectionalItem<T>* item;
+                item = new UnidirectionalItem<T>(itemValue);
+                this->end()->bindNext(item);
+            }
+
+        private:
+            /**
+             * @var UnidirectionalItem<T>
+             */
+            UnidirectionalItem<T> *current;
+
+            /**
+             * @var UnidirectionalItem<T>
+             */
+            UnidirectionalItem<T> *first;
     };
 }
 
