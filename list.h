@@ -5,7 +5,7 @@
 #define LIST_H
 
 #include <cstdlib>
-#include <iostream>
+
 namespace list {
     template<typename T>
     class AbstractItem
