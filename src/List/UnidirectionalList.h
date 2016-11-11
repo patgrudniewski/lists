@@ -1,108 +1,17 @@
 /**
  * @author Patryk Grudniewski <patgrudniewski@gmail.com>
  */
-#ifndef LIST_H
-#define LIST_H
+#ifndef LIST_UNIDIRECTIONALLIST_H
+#define LIST_UNIDIRECTIONALLIST_H
 
 #include <cstdlib>
 
-namespace list {
-    template<typename T>
-    class AbstractItem
-    {
-        public:
-            /**
-             * @param T value
-             */
-            AbstractItem(T value)
-                : value(value) {  }
+#include "AbstractList.h"
+#include "Item/UnidirectionalItem.h"
 
-            virtual ~AbstractItem() {  }
-
-            /**
-             * @return T
-             */
-            T getValue()
-            {
-                return this->value;
-            }
-        private:
-            /**
-             * @var T
-             */
-            T value;
-    };
-
-    template<typename T>
-    class UnidirectionalItem : public AbstractItem<T>
-    {
-        public:
-            /**
-             * @param T value
-             */
-            UnidirectionalItem(T value)
-                : AbstractItem<T>(value), next(NULL) {  }
-
-            ~UnidirectionalItem() {  }
-
-            /**
-             * @param UnidirectionalItem<T>* next
-             * @return void
-             */
-            void bindNext(UnidirectionalItem<T>* next)
-            {
-                this->next = next;
-            }
-
-            /**
-             * @return UnidirectionalItem<T>*
-             */
-            UnidirectionalItem<T>* getNext()
-            {
-                return this->next;
-            }
-
-        private:
-            /**
-             * @var UnidirectionalItem<T>*
-             */
-            UnidirectionalItem<T> *next;
-    };
+namespace List {
+    using namespace Item;
     
-    template<typename T>
-    class AbstractList
-    {
-        public:
-            virtual ~AbstractList() {  }
-
-            /**
-             * @param T itemValue
-             * @return void
-             */
-            virtual void append(T itemValue) = 0;
-
-            /**
-             * @param T itemValue
-             * @return void
-             */
-            virtual void prepend(T itemValue) = 0;
-
-            /**
-             * @return int
-             */
-            virtual int count() = 0;
-
-            /**
-             * @return T
-             */
-            virtual T shift() = 0;
-
-            /**
-             * @return T
-             */
-            virtual T pop() = 0;
-    };
-
     template<typename T>
     class UnidirectionalList : public AbstractList<T>
     {
